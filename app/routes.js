@@ -3,12 +3,14 @@
 module.exports = function(app, passport, title) {
 //----------------------------------------------
     //Home Page --------------------------------
+//----------------------------------------------
     app.get("/", function(req, res) {
         console.log("Routing /");
         res.render('index.ejs', { title: title });
     });
-//----------------------------------------------
-    //Login ------------------------------------
+    //-------------------------------------------
+    //Login -------------------------------------
+    //-------------------------------------------
     app.get('/login', function(req, res) {
         console.log("Routing /login");
         //render the page and pass any flash data if it exists
@@ -16,9 +18,14 @@ module.exports = function(app, passport, title) {
     });
 
     //process the login form
-    //app.post('/login', //do stuff here)
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect: '/profile', //Forward to profile page after login
+        failureRedirect: '/login', //Redirect to try to login again
+        failureFlash: true //allow sending error messages
+    }))
 //-----------------------------------------------
     //Sign up -----------------------------------
+//-----------------------------------------------
     app.get('/signup', function(req, res) {
         console.log("Routing /signup");
         //render the page and pass any flash data if it exists
