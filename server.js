@@ -8,7 +8,7 @@ var title = titleOfApp + " " + version;
 var path = require('path');
 var express = require('express');
 var app = express();
-var port = process.env.port || 3000;
+var port = process.env.PORT || 8080; //process.env.PORT means that Heroku can set the port dynamically 
 
 var mongoose = require('mongoose');
 var passport = require('passport');
