@@ -25,9 +25,10 @@
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>balance</strong>: <%= user.local.balance %><br>
                         <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
+                        <a class="btn btn-default" href="/account/deposit">Make a Deposit</a>
+                        <a class="btn btn-default" href="/account/withdraw">Make a Withdrawal</a>
                     </p>
 
             </div>

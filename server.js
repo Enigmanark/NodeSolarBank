@@ -1,4 +1,6 @@
 //server.js
+var path = require('path');
+
 var titleOfApp = "Node.js Solar Bank";
 var version = "0.1.0";
 var title = titleOfApp + " " + version;
@@ -28,6 +30,7 @@ require("./config/passport")(passport); //pass passport to the configuration
 app.use(morgan('dev')); //Log requests to the console
 app.use(bodyParser()); //For parsing html forms
 app.use(cookieParser()); //Needed for auth
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Setup View Engine
 app.set('view engine', 'ejs');
