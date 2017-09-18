@@ -1,0 +1,26 @@
+<!-- ./views/withdraw.ejs -->
+<!doctype html>
+<html>
+<%- include ./partials/top.ejs %>
+
+    <div class="jumbotron text-center">
+        <% if(errorMessage != "none") { %>
+            <div class="alert alert-danger">
+                <%= errorMessage %>
+            </div>
+        <% } if(message != "none") { %>
+            <div class="alert alert-info">
+                <%= message %>
+            </div>
+        <% } %>
+    <h1>Make a Withdrawal</h1>
+    <strong>Balance:</strong><span>$<%= user.balance %></span>
+    <form action="/account/withdraw" method="POST">
+        <label for="withdraw">Withdraw Amount</label>
+        <input type="number" min="0.01" step="0.01" max="1000" name="withdraw"/>
+        <button type="submit" class="btn btn-default">Withdraw</button>
+    </form>
+    </div>
+
+<%- include ./partials/bottom.ejs %>
+</html>

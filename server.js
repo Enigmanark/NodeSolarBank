@@ -2,7 +2,7 @@
 var path = require('path');
 
 var titleOfApp = "Node.js Solar Bank";
-var version = "0.1.0";
+var version = "0.6.0";
 var title = titleOfApp + " " + version;
 
 var path = require('path');

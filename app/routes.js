@@ -34,9 +34,9 @@ module.exports = function(app, passport, title) {
         });
     });
 
-    //-------------------------------------------
+//-------------------------------------------
     //Login -------------------------------------
-    //-------------------------------------------
+//-------------------------------------------
     app.get('/login', function(req, res) {
         //render the page and pass any flash data if it exists
         res.render('login.ejs', { 
@@ -92,17 +92,70 @@ module.exports = function(app, passport, title) {
         });
     });
 
+    //Handle processing for deposit
     app.post('/account/deposit', isLoggedIn, accountManager.deposit, function(req, res) {
-        req.flash("success", "Your deposit was successful.");
-        res.render('deposit.ejs', { title: title , message: req.flash('success')});
+        req.flash("DepositSuccess", "Your deposit was successful.");
+        res.render('deposit.ejs', { 
+            title: title , 
+            loggedIn: req.isAuthenticated(),
+            user: req.user,
+            message: req.flash('DepositSuccess')
+        });
     })
+
+     //Handle processing for withdrawal
+    app.post('/account/withdraw', isLoggedIn, accountManager.withdraw, function(req, res) {
+        //if the query makes it here then something went wrong
+        req.flash("WithdrawServerError", "Critical error with withdraw. Contact admin.");
+        res.redirect('error.ejs', {
+            errorMessage: req.flash("WithdrawServerError")
+        });
+    });
+
+    //Send form for withdrawal, but first check if the user is logged in or not
+    app.get('/account/withdraw', isLoggedIn, function(req, res) {
+        if(req.query.error) {
+            req.flash("WithdrawError", "You don't have enough money for that withdrawal.");
+            res.render('withdraw.ejs', {
+                title: title,
+                loggedIn: req.isAuthenticated(),
+                user: req.user,
+                errorMessage: req.flash("WithdrawError"),
+                message: "none"
+            });
+        } 
+        else if(req.query.success) {
+            req.flash("WithdrawSuccess", "Your withdrawal was successful.");
+            res.render('withdraw.ejs', { 
+                title: title , 
+                loggedIn: req.isAuthenticated(),
+                user: req.user,
+                errorMessage: "none",
+                message: req.flash('WithdrawSuccess')
+            });
+        }
+        else {
+            res.render('withdraw.ejs', {
+                title: title,
+                loggedIn: req.isAuthenticated(),
+                user: req.user,
+                message: "none",
+                errorMessage: "none"
+            });
+        }
+    });
 //----------------------------------------------
     //Logout -----------------------------------
+//----------------------------------------------
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     })
 
+
+//----------------------------------------------
+    //404 Error --------------------------------
+//----------------------------------------------
     app.use(function (req, res, next) {
         res.status(404).send("Sorry can't find that!")
       })
