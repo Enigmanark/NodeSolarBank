@@ -25,6 +25,12 @@
             <li class="nav item">
                 <a class="navlink" href="/contact">Contact</a>
             </li>
+        <% if(loggedIn) { %>
+            <p class="navbar-text navbar-right">
+                Logged in as <%= user.email %> <a href="/logout">Sign out</a>
+            </p>
+        <% } %>
         </ul>
+
     </nav> 
 </html>

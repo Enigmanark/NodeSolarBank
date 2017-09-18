@@ -7,14 +7,22 @@ module.exports = function(app, passport, title) {
     //Home Page --------------------------------
 //----------------------------------------------
     app.get("/", function(req, res) {
-        res.render('index.ejs', { title: title });
+        res.render('index.ejs', { 
+            title: title, 
+            loggedIn: req.isAuthenticated(),
+            user : req.user 
+        });
     });
     //-------------------------------------------
     //Login -------------------------------------
     //-------------------------------------------
     app.get('/login', function(req, res) {
         //render the page and pass any flash data if it exists
-        res.render('login.ejs', { title: title, message: req.flash('loginMessage') } );
+        res.render('login.ejs', { 
+            title: title, 
+            message: req.flash('loginMessage'),
+            loggedIn: req.isAuthenticated()
+        } );
     });
 
     //process the login form
@@ -28,12 +36,16 @@ module.exports = function(app, passport, title) {
 //-----------------------------------------------
     app.get('/signup', function(req, res) {
         //render the page and pass any flash data if it exists
-        res.render('signup.ejs', { title: title, message: req.flash('signupMessage') } );
+        res.render('signup.ejs', { 
+            title: title, 
+            message: req.flash('signupMessage'), 
+            loggedIn: req.isAuthenticated()
+        } );
     });
 
     //process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/profile', //redirect to profile page if successful
+        successRedirect: '/account', //redirect to profile page if successful
         failureRedirect: '/signup', //redirect to signup if fail
         failureFlash: true //allow flash messages
     }))
@@ -44,6 +56,7 @@ module.exports = function(app, passport, title) {
     app.get('/account', isLoggedIn, function(req, res) {
         res.render('account.ejs', {
             title: title,
+            loggedIn: req.isAuthenticated(),
             user : req.user //get the user from session and pass to template
         });
     });
@@ -52,6 +65,7 @@ module.exports = function(app, passport, title) {
     app.get('/account/deposit', isLoggedIn, function(req, res) {
         res.render('deposit.ejs', {
             title: title,
+            loggedIn: req.isAuthenticated(),
             user: req.user,
             message: "none"
         });
@@ -82,7 +96,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
 
-    //Otherwise redirect to home page
+    //Otherwise redirect to login
     console.log("Not authenticated, redirecting");
-    res.redirect('/');
+    res.redirect('/login');
 }
