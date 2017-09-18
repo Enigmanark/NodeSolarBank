@@ -13,6 +13,27 @@ module.exports = function(app, passport, title) {
             user : req.user 
         });
     });
+//----------------------------------------------
+    //Contact --------------------------------
+//----------------------------------------------
+    app.get("/contact", function(req, res) {
+        res.render('contact.ejs', { 
+            title: title, 
+            loggedIn: req.isAuthenticated(),
+            user : req.user 
+        });
+    });
+//----------------------------------------------
+    //About --------------------------------
+//----------------------------------------------
+    app.get("/about", function(req, res) {
+        res.render('about.ejs', { 
+            title: title, 
+            loggedIn: req.isAuthenticated(),
+            user : req.user 
+        });
+    });
+
     //-------------------------------------------
     //Login -------------------------------------
     //-------------------------------------------
