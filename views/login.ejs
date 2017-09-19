@@ -23,6 +23,11 @@
         <div class="alert alert-danger"><%= message %></div>
     <% } %>
 
+    <!-- If just registered show message -->
+    <% if (successfulRegister != "none") { %>
+       <div class="alert alert-info"><%= successfulRegister %></div>
+    <% } %> 
+
     <!-- LOGIN FORM -->
     <form action="/login" method="post">
         <div class="form-group">

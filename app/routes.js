@@ -1,6 +1,7 @@
 // ./app/routes.js
 var config = require("../config/config.js");
 var accountManager = require('./accountManager.js');
+var signUp = require("./signUp");
 var title = config.titleOfApp + " " + config.version;
 
 module.exports = function(app, passport) {
@@ -39,11 +40,23 @@ module.exports = function(app, passport) {
     //Login -------------------------------------
 //-------------------------------------------
     app.get('/login', function(req, res) {
-        //render the page and pass any flash data if it exists
-        res.render('login.ejs', { 
-            title: title, 
-            message: req.flash('loginMessage')
-        } );
+        //If we just registered show a message that it was successful
+        if(req.query.registered) {
+            req.flash("registerSuccess", "Registration successful. You may now login.");
+            res.render('login.ejs', {
+                title: title,
+                successfulRegister: req.flash("registerSuccess"), 
+                message: req.flash('loginMessage')
+            });
+        }
+        else {
+            //render the page and pass any flash data if it exists
+            res.render('login.ejs', { 
+                title: title,
+                successfulRegister: "none", 
+                message: req.flash('loginMessage')
+            } );
+        }
     });
 
     //process the login form
@@ -56,20 +69,27 @@ module.exports = function(app, passport) {
     //Sign up -----------------------------------
 //-----------------------------------------------
     app.get('/signup', function(req, res) {
-        //render the page and pass any flash data if it exists
-        res.render('signup.ejs', { 
-            title: title, 
-            message: req.flash('signupMessage'), 
-            loggedIn: req.isAuthenticated()//always pass whether logged in, the navbar needs it
-        } );
+        //If there was a signup error
+        if(req.query.error) {
+            req.flash("signUpError", "There is already an account with that email.");
+            res.render('signup.ejs', {
+                title: title,
+                message: req.flash("signUpError"),
+            });
+        }
+        else {
+            //else just display normal signup if there's no error
+            res.render('signup.ejs', { 
+                title: title, 
+                message: "none"
+            } );
+        }
     });
 
     //process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/account', //redirect to profile page if successful
-        failureRedirect: '/signup', //redirect to signup if fail
-        failureFlash: true //allow flash messages
-    }))
+    app.post('/signup', signUp, function(req, res) {
+        res.redirect("/login?registered=true");
+    });
 //----------------------------------------------
     //Account ----------------------------------
 //----------------------------------------------
