@@ -31,30 +31,25 @@ var withdraw = function(req, res, next) {
     User.findOne({ "email" : req.user.email }, function(err, user) { //Find the user by email
         if(err) return next(err);
         if(user) { //If the user is found
-            if(user.balance == 0) { //If you're trying to make a withdrawl and you have 0, then we don't even need to check
-               // console.log("Balance was 0")
-                res.redirect("/acount/withdraw?error=true"); //Redirect
+            if(user.balance == 0) { //If you're trying to make a withdrawl and you have 0
+                res.redirect("/acount/withdraw?error=true"); //Redirect cuz you can't have any withdrawals
             }
             else if(user.balance == null) { //Same, if the balance is 0 then we don't need to check just redirect
                 user.balance = 0;
                 user.save(function (err) { //Go ahead and set to 0 though and save
                     if(err) throw err;
-                    //console.log("Balance was null");
-                    res.redirect("/account/withdraw?error=true");
+                    res.redirect("/account/withdraw?error=true"); //Redirect since can't make withdrawal
                 });
             }
-            var withdraw = Number(req.body.withdraw);
-            var balance = user.balance - withdraw;
-            if(balance > 0) { //If the user had enough money then withdraw it and save
-                user.balance = balance;
+            var withdraw = Number(req.body.withdraw); //set to number instead of String
+            var balance = user.balance - withdraw; //Some math checking to see if there's enough
+            if(balance > 0) { //If the user had enough money
+                user.balance = balance; //then do so
                 user.save(function(err) { //save the user after withdrawing
                     if(err) throw err;
                     res.redirect("/account/withdraw?success=true"); //Redirect to get with success if withdrew
                 });
             } else {
-                //console.log("Withdraw is " + withdraw);
-                //console.log("User balance is " + user.balance);
-                //console.log("Balance was not above 0, balance was " + balance);
                 res.redirect("/account/withdraw?error=true"); //redirect if user didn't have enough
             }  
             

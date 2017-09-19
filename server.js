@@ -1,11 +1,5 @@
 //server.js
 var path = require('path');
-
-var titleOfApp = "Node.js Solar Bank";
-var version = "0.6.0";
-var title = titleOfApp + " " + version;
-
-var path = require('path');
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080; //process.env.PORT means that Heroku can set the port dynamically 
@@ -30,7 +24,7 @@ require("./config/passport")(passport); //pass passport to the configuration
 app.use(morgan('dev')); //Log requests to the console
 app.use(bodyParser()); //For parsing html forms
 app.use(cookieParser()); //Needed for auth
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); //set the folder for images and css and stuff
 
 //Setup View Engine
 app.set('view engine', 'ejs');
@@ -42,7 +36,7 @@ app.use(passport.session()); //persistent login sessions
 app.use(flash()); //Use flash for messages stored in session
 
 //routes ----------------------------------------------
-require("./app/routes.js")(app, passport, title);
+require("./app/routes.js")(app, passport);
 
 //execute ---------------------------------------------
 app.listen(port);

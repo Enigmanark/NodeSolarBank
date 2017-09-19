@@ -1,16 +1,17 @@
 // ./app/routes.js
-
+var config = require("../config/config.js");
 var accountManager = require('./accountManager.js');
+var title = config.titleOfApp + " " + config.version;
 
-module.exports = function(app, passport, title) {
+module.exports = function(app, passport) {
 //----------------------------------------------
     //Home Page --------------------------------
 //----------------------------------------------
     app.get("/", function(req, res) {
         res.render('index.ejs', { 
             title: title, 
-            loggedIn: req.isAuthenticated(),
-            user : req.user 
+            loggedIn: req.isAuthenticated(), //always pass whether logged in, the navbar needs it
+            user : req.user //always pass user, the navbar needs it, ejs handles if user is null or not
         });
     });
 //----------------------------------------------
@@ -19,8 +20,8 @@ module.exports = function(app, passport, title) {
     app.get("/contact", function(req, res) {
         res.render('contact.ejs', { 
             title: title, 
-            loggedIn: req.isAuthenticated(),
-            user : req.user 
+            loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
+            user : req.user //always pass user, the navbar needs it, ejs handles if user is null or not
         });
     });
 //----------------------------------------------
@@ -29,8 +30,8 @@ module.exports = function(app, passport, title) {
     app.get("/about", function(req, res) {
         res.render('about.ejs', { 
             title: title, 
-            loggedIn: req.isAuthenticated(),
-            user : req.user 
+            loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
+            user : req.user //always pass user, the navbar needs it, ejs handles if user is null or not
         });
     });
 
@@ -41,8 +42,7 @@ module.exports = function(app, passport, title) {
         //render the page and pass any flash data if it exists
         res.render('login.ejs', { 
             title: title, 
-            message: req.flash('loginMessage'),
-            loggedIn: req.isAuthenticated()
+            message: req.flash('loginMessage')
         } );
     });
 
@@ -60,7 +60,7 @@ module.exports = function(app, passport, title) {
         res.render('signup.ejs', { 
             title: title, 
             message: req.flash('signupMessage'), 
-            loggedIn: req.isAuthenticated()
+            loggedIn: req.isAuthenticated()//always pass whether logged in, the navbar needs it
         } );
     });
 
@@ -77,7 +77,7 @@ module.exports = function(app, passport, title) {
     app.get('/account', isLoggedIn, function(req, res) {
         res.render('account.ejs', {
             title: title,
-            loggedIn: req.isAuthenticated(),
+            loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user : req.user //get the user from session and pass to template
         });
     });
@@ -86,7 +86,7 @@ module.exports = function(app, passport, title) {
     app.get('/account/deposit', isLoggedIn, function(req, res) {
         res.render('deposit.ejs', {
             title: title,
-            loggedIn: req.isAuthenticated(),
+            loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user: req.user,
             message: "none"
         });
@@ -97,15 +97,16 @@ module.exports = function(app, passport, title) {
         req.flash("DepositSuccess", "Your deposit was successful.");
         res.render('deposit.ejs', { 
             title: title , 
-            loggedIn: req.isAuthenticated(),
+            loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user: req.user,
             message: req.flash('DepositSuccess')
         });
     })
 
-     //Handle processing for withdrawal
+     //Handle processing for withdrawal, first check if user is logged in, then process the withdrawal through
+     //account manager
     app.post('/account/withdraw', isLoggedIn, accountManager.withdraw, function(req, res) {
-        //if the query makes it here then something went wrong
+        //if the program makes it here then something went badly wrong
         req.flash("WithdrawServerError", "Critical error with withdraw. Contact admin.");
         res.redirect('error.ejs', {
             errorMessage: req.flash("WithdrawServerError")
@@ -118,7 +119,7 @@ module.exports = function(app, passport, title) {
             req.flash("WithdrawError", "You don't have enough money for that withdrawal.");
             res.render('withdraw.ejs', {
                 title: title,
-                loggedIn: req.isAuthenticated(),
+                loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,
                 errorMessage: req.flash("WithdrawError"),
                 message: "none"
@@ -128,7 +129,7 @@ module.exports = function(app, passport, title) {
             req.flash("WithdrawSuccess", "Your withdrawal was successful.");
             res.render('withdraw.ejs', { 
                 title: title , 
-                loggedIn: req.isAuthenticated(),
+                loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,
                 errorMessage: "none",
                 message: req.flash('WithdrawSuccess')
@@ -137,7 +138,7 @@ module.exports = function(app, passport, title) {
         else {
             res.render('withdraw.ejs', {
                 title: title,
-                loggedIn: req.isAuthenticated(),
+                loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,
                 message: "none",
                 errorMessage: "none"

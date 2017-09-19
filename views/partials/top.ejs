@@ -1,3 +1,7 @@
+<!-- ./views/partials/top.ejs -->
+
+<!-- The top part of our layout -->
+
 <html>
 <head>
     <title> <%= title %> </title>
@@ -8,9 +12,12 @@
     <!-- load local stylesheet -->
     <link rel="stylesheet" href="/css/stylesheet.css">
 </head>
-
 <body>
+
+<!-- Our main container -->
 <div class="container">
+
+<!-- The navbar -->
     <nav class="navbar navbar-default">
         <ul class="nav nav-pills">
             <li class="nav-item">
@@ -25,12 +32,14 @@
             <li class="nav item">
                 <a class="navlink" href="/contact">Contact</a>
             </li>
+        <!-- If we're logged in then show the user and the signout link -->
         <% if(loggedIn) { %>
             <p class="navbar-text navbar-right">
                 Logged in as <%= user.email %> <a href="/logout">Sign out</a>
             </p>
         <% } %>
         </ul>
-
     </nav> 
+
+<!-- The end of the top partial, from here on the layout will continue and it will be the body content -->
 </html>
