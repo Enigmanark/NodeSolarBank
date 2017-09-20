@@ -1,4 +1,5 @@
 // ./app/routes.js
+var User = require('../app/models/user.js');
 var config = require("../config/config.js");
 var accountManager = require('./accountManager.js');
 var signUp = require("./signUp");
@@ -94,7 +95,7 @@ module.exports = function(app, passport) {
     //Account ----------------------------------
 //----------------------------------------------
     //This will be protected so you have to be logged in to visit these urls, we will use the isLoggedIn() function
-    app.get('/account', isLoggedIn, isAdmin, function(req, res) {
+    app.get('/account', isLoggedIn, function(req, res) {
         res.render('./account/account.ejs', {
             title: title,
             loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
@@ -165,13 +166,27 @@ module.exports = function(app, passport) {
             });
         }
     });
+
+//----------------------------------------------
+    //Admin ------------------------------------
+//----------------------------------------------
+    app.get('/users', isLoggedIn, isAdmin, function(req, res) {
+        User.find({}, function(err, users) {
+            res.render('/accountList.ejs', {
+                title: title,
+                loggedIn: req.isAuthenticated(),
+                users: users
+            });
+        });
+    });
+
 //----------------------------------------------
     //Logout -----------------------------------
 //----------------------------------------------
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
-    })
+    });
 
 
 //----------------------------------------------
@@ -179,7 +194,7 @@ module.exports = function(app, passport) {
 //----------------------------------------------
     app.use(function (req, res, next) {
         res.status(404).send("Sorry can't find that!")
-      })
+    });
 }
 
 //----------------------------------------------

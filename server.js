@@ -16,7 +16,7 @@ var session      = require('express-session');
 //configuration ------------------------------------------------
 var configDB = require('./config/database.js');
 
-mongoose.connect(configDB.url); //Connect to the database
+mongoose.connection.openUri(configDB.url); //Connect to the database
 
 require("./config/passport")(passport); //pass passport to the configuration
 
