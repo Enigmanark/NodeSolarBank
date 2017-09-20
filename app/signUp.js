@@ -31,6 +31,8 @@ module.exports = function(req, res, next) {
             }
             else {
                 var newUser = new User(); //Make a new user and set it's fields
+                newUser.admin = false;
+                newUser.disabled = false;
                 newUser.email = email; //set the email
                 newUser.accountNumber = accNumber; //set the account number
                 newUser.password = newUser.generateHash(password); //encrypt the password

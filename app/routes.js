@@ -94,7 +94,7 @@ module.exports = function(app, passport) {
     //Account ----------------------------------
 //----------------------------------------------
     //This will be protected so you have to be logged in to visit these urls, we will use the isLoggedIn() function
-    app.get('/account', isLoggedIn, function(req, res) {
+    app.get('/account', isLoggedIn, isAdmin, function(req, res) {
         res.render('./account/account.ejs', {
             title: title,
             loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
@@ -187,11 +187,21 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
     //if the user is authenticated then carry on 
     if(req.isAuthenticated()) {
-        console.log("Is authenticated");
         return next();
     }
 
     //Otherwise redirect to login
-    console.log("Not authenticated, redirecting");
     res.redirect('/login');
+}
+
+//----------------------------------------------
+//IsAdmin()
+function isAdmin(req, res, next) {
+    //if the user is an admin then carry on
+    if(req.user.admin) {
+        return next();
+    }
+
+    //Not an admin, redirect
+    res.redirect('/');
 }

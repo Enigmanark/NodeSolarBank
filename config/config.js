@@ -2,5 +2,5 @@
 
 module.exports = {
     titleOfApp : "Node.js Solar Bank",
-    version : "0.7.0"
+    version : "0.7.5"
 }
