@@ -1,3 +1,29 @@
 .footer-container {
     text-align: center;
 }
+
+.account-container {
+    margin: auto;
+    padding: 10px;
+    width: 90%;
+    background-color: lightgrey;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+.statement-container {
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 15px;
+    width: 600px;
+    background-color: gray;
+}
+
+.statement-description {
+    float: left;
+}
+
+.statement-amount {
+    float: right;
+}
