@@ -8,15 +8,16 @@
     <!-- Account information -->
         <div class="account-container">
             <ul style="float: right;">
-                <% for(i = 0; i < statements.length(); i++) { %>
+                <% for(i = 0; i < user.statements.length; i++) { %>
                     <div class="statement-container">
                         <li><span class="statement-description">Transfer from James Crocker</span>
                         <span class="statement-amount">+25.00</span></li>
                     </div>
                 <% } %>
             </ul>
-            <h3><span class="fa fa-user"></span> Account Summary</h3>
+            <h3><span class="fa fa-user"></span>Account Summary</h3>
             <p>
+                <strong>account</strong>: <%= user.accountNumber %> <br>
                 <% if(user.balance != null) { %>
                     <strong>balance</strong>: $<%= user.balance %>
                 <% } else { %>
