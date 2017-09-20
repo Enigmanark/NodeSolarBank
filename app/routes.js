@@ -95,7 +95,7 @@ module.exports = function(app, passport) {
 //----------------------------------------------
     //This will be protected so you have to be logged in to visit these urls, we will use the isLoggedIn() function
     app.get('/account', isLoggedIn, function(req, res) {
-        res.render('account.ejs', {
+        res.render('./account/account.ejs', {
             title: title,
             loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user : req.user //get the user from session and pass to template
@@ -104,7 +104,7 @@ module.exports = function(app, passport) {
 
     //Send form for deposit, but first check if the user is logged in or not
     app.get('/account/deposit', isLoggedIn, function(req, res) {
-        res.render('deposit.ejs', {
+        res.render('./account/deposit.ejs', {
             title: title,
             loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user: req.user,
@@ -115,7 +115,7 @@ module.exports = function(app, passport) {
     //Handle processing for deposit
     app.post('/account/deposit', isLoggedIn, accountManager.deposit, function(req, res) {
         req.flash("DepositSuccess", "Your deposit was successful.");
-        res.render('deposit.ejs', { 
+        res.render('./account/deposit.ejs', { 
             title: title , 
             loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
             user: req.user,
@@ -137,7 +137,7 @@ module.exports = function(app, passport) {
     app.get('/account/withdraw', isLoggedIn, function(req, res) {
         if(req.query.error) {
             req.flash("WithdrawError", "You don't have enough money for that withdrawal.");
-            res.render('withdraw.ejs', {
+            res.render('./account/withdraw.ejs', {
                 title: title,
                 loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,
@@ -147,7 +147,7 @@ module.exports = function(app, passport) {
         } 
         else if(req.query.success) {
             req.flash("WithdrawSuccess", "Your withdrawal was successful.");
-            res.render('withdraw.ejs', { 
+            res.render('./account/withdraw.ejs', { 
                 title: title , 
                 loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,
@@ -156,7 +156,7 @@ module.exports = function(app, passport) {
             });
         }
         else {
-            res.render('withdraw.ejs', {
+            res.render('./account/withdraw.ejs', {
                 title: title,
                 loggedIn: req.isAuthenticated(),//always pass whether logged in, the navbar needs it
                 user: req.user,

@@ -8,16 +8,37 @@ module.exports = function(req, res, next) {
 
     //Check if there's an account already with that email
     User.findOne( { "email" : email}, function(err, user) {
+        if(err) throw err;
         if(user) { //If we found a user, then signup fails, redirect
             res.redirect("/signup?error=true");
         }
-        else { //No user was found so create a new user
-            newUser = new User();
-            newUser.email = email;
-            newUser.password = newUser.generateHash(password);
-            newUser.save(function(err) {
-                return next();
-            })
+        else {
+            loop();
         }
     });
+
+    var loop = function() {
+        //Generate a random 9 digit number
+        var accNumber = Number(Math.random().toString().slice(2, 11));
+        //now check if this number has already been used
+        User.findOne( { "accountNumber" : accNumber }, function(err, u) {
+            if(err) {
+                console.log(err);
+            }
+            //If we didn't find a user with that number then
+            if(u) {
+                loop();
+            }
+            else {
+                var newUser = new User(); //Make a new user and set it's fields
+                newUser.email = email; //set the email
+                newUser.accountNumber = accNumber; //set the account number
+                newUser.password = newUser.generateHash(password); //encrypt the password
+                newUser.save(function(err) { //save the user
+                    generatingAccountNumber = false; //stop the while loop
+                });
+                return next(); //once we reach here, we're finished so return next()
+            }
+        });
+    }
 }
