@@ -6,29 +6,33 @@
 <!-- Body content -->
 
     <!-- Account information -->
-        <div class="account-container">
-            <ul style="float: right;">
-                <% for(i = 0; i < user.statements.length; i++) { %>
+    <div class="account-container">
+        <ul style="float: right;">
+            <div class="statements-container">
+                <% for(i = user.statements.length; i <= 0; i--) { %>
                     <div class="statement-container">
-                        <li><span class="statement-description">Transfer from James Crocker</span>
-                        <span class="statement-amount">+25.00</span></li>
+                        <li><strong><span class="statement-date"> <%= user.statements[i].dateString %> </span></strong>
+                        <span class="statement-description"> <%= user.statements[i].description %></span>
+                        <span class="statement-amount"><%= user.statements[i].amount %></span></li>
                     </div>
                 <% } %>
-            </ul>
-            <h3><span class="fa fa-user"></span>Account Summary</h3>
-            <p>
-                <strong>account</strong>: <%= user.accountNumber %> <br>
-                <% if(user.balance != null) { %>
-                    <strong>balance</strong>: $<%= user.balance %>
-                <% } else { %>
-                    <strong>balance</strong>: $0.00
-                <% } %>
-                <br>
-                <strong>email</strong>: <%= user.email %><br><br>
-                <a class="btn btn-default" href="/account/deposit">Make a Deposit</a>
-                <a class="btn btn-default" href="/account/withdraw">Make a Withdrawal</a>
-            </p>
-        </div>
+            </div>
+        </ul>
+        <h3><span class="fa fa-user"></span>Account Summary</h3>
+        <p>
+            <strong>account</strong>: <%= user.accountNumber %> <br>
+            <% if(user.balance != null) { %>
+                <strong>balance</strong>: $<%= user.balance %>
+            <% } else { %>
+                <strong>balance</strong>: $0.00
+            <% } %>
+            <br>
+            <strong>email</strong>: <%= user.email %><br><br>
+            <a class="btn btn-default" href="/account/deposit">Make a Deposit</a>
+            <a class="btn btn-default" href="/account/withdraw">Make a Withdrawal</a>
+        </p>
+    </div>
+
 <!-- End body content -->
 
 <%- include ../partials/bottom.ejs %>

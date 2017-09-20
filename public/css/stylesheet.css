@@ -11,13 +11,22 @@
     padding-bottom: 20px;
 }
 
+.statements-container {
+    margin-top: 15px;
+}
+
 .statement-container {
     padding: 3px;
     padding-left: 5px;
     padding-right: 5px;
-    margin-top: 15px;
-    width: 600px;
+    margin-top: 2px;
+    width: 700px;
     background-color: gray;
+}
+
+.statement-date {
+    float: left;
+    margin-right: 10px;
 }
 
 .statement-description {
