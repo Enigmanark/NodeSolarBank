@@ -9,12 +9,14 @@
     <div class="account-container">
         <ul style="float: right;">
             <div class="statements-container">
-                <% for(i = user.statements.length; i <= 0; i--) { %>
-                    <div class="statement-container">
-                        <li><strong><span class="statement-date"> <%= user.statements[i].dateString %> </span></strong>
-                        <span class="statement-description"> <%= user.statements[i].description %></span>
-                        <span class="statement-amount"><%= user.statements[i].amount %></span></li>
-                    </div>
+                <% if(user.statements.length != 0) { %>
+                    <% for(i = user.statements.length; i <= 0; i--) { %>
+                        <div class="statement-container">
+                            <li><strong><span class="statement-date"> <%= user.statements[i].dateString %> </span></strong>
+                            <span class="statement-description"> <%= user.statements[i].description %></span>
+                            <span class="statement-amount"><%= user.statements[i].amount %></span></li>
+                        </div>
+                    <% } %>
                 <% } %>
             </div>
         </ul>
