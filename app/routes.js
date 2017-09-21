@@ -172,10 +172,11 @@ module.exports = function(app, passport) {
 //----------------------------------------------
     app.get('/users', isLoggedIn, isAdmin, function(req, res) {
         User.find({}, function(err, users) {
-            res.render('/accountList.ejs', {
+            res.render('./accountList.ejs', {
                 title: title,
                 loggedIn: req.isAuthenticated(),
-                users: users
+                users: users,
+                user: req.user
             });
         });
     });

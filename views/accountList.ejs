@@ -2,8 +2,18 @@
 <!doctype html>
 <html>
 <%- include ./partials/top.ejs %>
+<!-- Body content -->
 
-    
+    <div class="account-list-container">
+        <ul>
+            <% for(i = 0; i < users.length; i++) { %>
+                <div class="statement-container">
+                    <span><strong><%= users[i].accountNumber %></strong> <%= users[i].email %></span>
+                </div>
+            <% } %>
+        </ul>
+    </div>
 
+<!-- End body content -->
 <%- include ./partials/bottom.ejs %>
 </html>
