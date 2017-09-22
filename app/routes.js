@@ -170,13 +170,30 @@ module.exports = function(app, passport) {
 //----------------------------------------------
     //Admin ------------------------------------
 //----------------------------------------------
-    app.get('/users', isLoggedIn, isAdmin, function(req, res) {
+
+    // User list 
+    app.get('/admin/users', isLoggedIn, isAdmin, function(req, res) {
         User.find({}, function(err, users) {
-            res.render('./accountList.ejs', {
+            res.render('./admin/accountList.ejs', {
                 title: title,
                 loggedIn: req.isAuthenticated(),
                 users: users,
                 user: req.user
+            });
+        });
+    });
+
+    // Account detail for admin
+    app.get('/admin/account', isLoggedIn, isAdmin, function(req, res) {
+        var accountN = req.query.number;
+        User.findOne( { 'accountNumber': accountN }, function(err, userAccount) {
+            if(err) throw err;
+            if(!userAccount) res.status(404).send("Sorry can't find that user!");
+            res.render('./admin/accountDetail.ejs', {
+                title: title,
+                loggedIn: req.isAuthenticated(),
+                user: req.user,
+                account: userAccount
             });
         });
     });

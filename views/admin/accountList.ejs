@@ -1,19 +1,21 @@
 <!-- ./views/index.ejs -->
 <!doctype html>
 <html>
-<%- include ./partials/top.ejs %>
+<%- include ../partials/top.ejs %>
 <!-- Body content -->
 
     <div class="account-list-container">
         <ul>
             <% for(i = 0; i < users.length; i++) { %>
-                <div class="statement-container">
+                <div class="user-account-container">
+                    <a href="/admin/account?number=<%= users[i].accountNumber %>">
                     <span><strong><%= users[i].accountNumber %></strong> <%= users[i].email %></span>
+                    </a>
                 </div>
             <% } %>
         </ul>
     </div>
 
 <!-- End body content -->
-<%- include ./partials/bottom.ejs %>
+<%- include ../partials/bottom.ejs %>
 </html>
