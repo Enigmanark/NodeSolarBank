@@ -76,13 +76,15 @@ module.exports = function(app, passport) {
             res.render('signup.ejs', {
                 title: title,
                 message: req.flash("signUpError"),
+                admin: false
             });
         }
         else {
             //else just display normal signup if there's no error
             res.render('signup.ejs', { 
                 title: title, 
-                message: "none"
+                message: "none",
+                admin: false
             } );
         }
     });
@@ -195,6 +197,42 @@ module.exports = function(app, passport) {
                 user: req.user,
                 account: userAccount
             });
+        });
+    });
+
+    //Make new account for admins
+    app.get('/admin/account/new', isLoggedIn, isAdmin, function(req, res) {
+        //If there was a signup error
+        if(req.query.error) {
+            req.flash("signUpError", "There is already an account with that email.");
+            res.render('signup.ejs', {
+                title: title,
+                admin: true,
+                message: req.flash("signUpError"),
+            });
+        }
+        else {
+            //else just display normal signup if there's no error
+            res.render('signup.ejs', { 
+                title: title, 
+                message: "none",
+                admin: true
+            } );
+        }
+    });
+    //Process signup form for admin new accounts
+    app.post('/admin/account/new', isLoggedIn, isAdmin, signUp, function(req, res) {
+        var email = req.body.email;
+        User.findOne( {"email": email}, function(err, account) {
+            if(err) throw err;
+            if(account == null) {
+                res.send("Sorry, couldn't find new user! Check the log for debug stuff!");
+                console.log(account);
+                console.log(email);
+            }
+            else {
+                res.redirect('/admin/account?number=' + account.accountNumber);
+            }
         });
     });
 

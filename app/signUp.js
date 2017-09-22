@@ -37,9 +37,9 @@ module.exports = function(req, res, next) {
                 newUser.accountNumber = accNumber; //set the account number
                 newUser.password = newUser.generateHash(password); //encrypt the password
                 newUser.save(function(err) { //save the user
-                    generatingAccountNumber = false; //stop the while loop
+                    return next(); //once we reach here, we're finished so return next()
                 });
-                return next(); //once we reach here, we're finished so return next()
+                
             }
         });
     }

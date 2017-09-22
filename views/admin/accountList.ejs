@@ -6,6 +6,7 @@
 
     <div class="account-list-container">
         <ul>
+            <a class="btn btn-default" href="/admin/account/new">New Account</a>
             <% for(i = 0; i < users.length; i++) { %>
                 <div class="user-account-container">
                     <a href="/admin/account?number=<%= users[i].accountNumber %>">
